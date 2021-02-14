@@ -21,29 +21,62 @@ namespace Semafori_Ponte
     /// </summary>
     public partial class MainWindow : Window
     {
+        readonly Uri uriMacchinaDestra = new Uri("Macchina-destra.png", UriKind.Relative);
+        static int posMacchinaDestra = 634;
+        readonly Uri uriMacchinaSinistra = new Uri("Macchina-sinistra.png", UriKind.Relative);
+        static int posMacchinaSinistra = 624;
+
+        private static object x = new object();
+
         public MainWindow()
         {
             InitializeComponent();
 
-            MyThread tr1 = new MyThread();
+            ImageSource imgDx = new BitmapImage(uriMacchinaSinistra);
+            imgMacchinaSinistra.Source = imgDx;
+            ImageSource imgSx = new BitmapImage(uriMacchinaDestra);
+            imgMacchinaDestra.Source = imgSx;
 
-            Thread t1 = new Thread(new ThreadStart(tr1.MovimentoDestraSinistra));
-            Thread t2 = new Thread(new ThreadStart(tr1.MovimentoSinistraDestra));
+            Thread t1 = new Thread(new ThreadStart(MovimentoDestraSinistra));
+            Thread t2 = new Thread(new ThreadStart(MovimentoSinistraDestra));
 
             t1.Start();
             t2.Start();
         }
 
-        public class MyThread
+        public void MovimentoDestraSinistra()
         {
-            public void MovimentoDestraSinistra()
+            lock (x)
             {
+                while (posMacchinaDestra > -463)
+                {
+                    posMacchinaDestra -= 2;
 
+                    Thread.Sleep(TimeSpan.FromMilliseconds(7));
+
+                    this.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        imgMacchinaDestra.Margin = new Thickness(posMacchinaDestra, 55, 0, 231);
+                    }));
+                }
             }
+        }
 
-            public void MovimentoSinistraDestra()
+        public void MovimentoSinistraDestra()
+        {
+            lock (x)
             {
+                while (posMacchinaSinistra > -463)
+                {
+                    posMacchinaSinistra -= 2;
 
+                    Thread.Sleep(TimeSpan.FromMilliseconds(7));
+
+                    this.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        imgMacchinaSinistra.Margin = new Thickness(0, 127, posMacchinaSinistra, 169);
+                    }));
+                }
             }
         }
     }
