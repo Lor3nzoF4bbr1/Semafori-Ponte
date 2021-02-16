@@ -10,6 +10,12 @@
         <Image x:Name="imgSfondo" Source="Sfondo ponte.png" Margin="0,-21,0,-10" RenderTransformOrigin="0.5,0.5" Grid.Column="0" Grid.RowSpan="1"/>
         <Image x:Name="imgMacchinaDestra" Source="Macchina-destra.png" Margin="634,55,0,231" RenderTransformOrigin="0.5,0.5" Grid.Column="0" Grid.RowSpan="1"/>
         <Image x:Name="imgMacchinaSinistra" Source="Macchina-sinistra.png" Margin="0,127,643,169" RenderTransformOrigin="0.5,0.5" Grid.Column="0" Grid.RowSpan="1"/>
+        <Button x:Name="btnStart" Content="Start" HorizontalAlignment="Left" Margin="309,10,0,0" VerticalAlignment="Top" Width="144" Height="58" FontSize="20" Click="btnStart_Click"/>
+        <TextBox x:Name="txtNMacchineSinistra" HorizontalAlignment="Left" Height="30" Margin="29,332,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141" FontSize="20"/>
+        <TextBox x:Name="txtNMacchineDestra" HorizontalAlignment="Left" Height="36" Margin="634,326,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="20"/>
+        <Label Content="Numero macchine &#xA;a sinistra" HorizontalAlignment="Left" Margin="29,274,0,0" VerticalAlignment="Top" Width="141" Height="53" FontSize="16"/>
+        <Label Content="Numero macchine &#xA;a destra" HorizontalAlignment="Left" Margin="634,268,0,0" VerticalAlignment="Top" Width="141" Height="53" FontSize="16"/>
+
 
     </Grid>
 </Window>
