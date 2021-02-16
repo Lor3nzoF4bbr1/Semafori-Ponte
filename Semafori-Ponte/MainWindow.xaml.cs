@@ -26,8 +26,8 @@ namespace Semafori_Ponte
         readonly Uri uriMacchinaSinistra = new Uri("Macchina-sinistra.png", UriKind.Relative);
         static int posMacchinaSinistra = 624;
 
-       private int macchineSinistra;
-       private int macchineDestra;
+        private int macchineSinistra;
+        private int macchineDestra;
 
         private static object x = new object();
 
@@ -42,30 +42,40 @@ namespace Semafori_Ponte
 
             imgMacchinaDestra.Visibility = Visibility.Hidden;
             imgMacchinaSinistra.Visibility = Visibility.Hidden;
+
+            imgSemaforoVerdeDestra.Visibility = Visibility.Hidden;
+            imgSemaforoVerdeSinistra.Visibility = Visibility.Hidden;
         }
 
         public void MovimentoDestraSinistra()
         {
-            int j;
-            for (int k = macchineDestra; k > 0; k -= 10)
+            int k;
+            while (macchineDestra > 0)
             {
-                j = 10;
-                macchineDestra = k;
+                k = 10;
 
-                if (k < 10)
+                if (macchineDestra < 10)
                 {
-                    j = k;
+                    k = macchineDestra;
                 }
 
                 lock (x)
                 {
-                    for (int i = 0; i < macchineDestra; i++)
+                    this.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        imgSemaforoVerdeDestra.Visibility = Visibility.Visible;
+                        imgSemaforoVerdeSinistra.Visibility = Visibility.Hidden;
+                        imgSemaforoRossoDestra.Visibility = Visibility.Hidden;
+                        imgSemaforoRossoSinistra.Visibility = Visibility.Visible;
+                    }));
+
+                    for (int i = 0; i < k; i++)
                     {
                         while (posMacchinaDestra > -463)
                         {
-                            posMacchinaDestra -= 100;
+                            posMacchinaDestra -= 2;
 
-                            Thread.Sleep(TimeSpan.FromMilliseconds(20));
+                            Thread.Sleep(TimeSpan.FromMilliseconds(1));
 
                             this.Dispatcher.BeginInvoke(new Action(() =>
                             {
@@ -79,31 +89,39 @@ namespace Semafori_Ponte
                         }
                     }
                 }
+                macchineDestra -= 10;
             }
         }
 
         public void MovimentoSinistraDestra()
         {
-            int j;
-            for(int k = macchineSinistra; k > 0; k -= 10)
+            int k;
+            while(macchineSinistra > 0)
             {
-                j = 10;
-                macchineSinistra = k;
+                k = 10;
 
-                if (k < 10)
+                if (macchineSinistra < 10)
                 {
-                    j = k;
+                    k = macchineSinistra;
                 }
 
                 lock (x)
                 {
-                    for (int i = 0; i < j; i++)
+                    this.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        imgSemaforoVerdeDestra.Visibility = Visibility.Hidden;
+                        imgSemaforoVerdeSinistra.Visibility = Visibility.Visible;
+                        imgSemaforoRossoDestra.Visibility = Visibility.Visible;
+                        imgSemaforoRossoSinistra.Visibility = Visibility.Hidden;
+                    }));
+
+                    for (int i = 0; i < k; i++)
                     {
                         while (posMacchinaSinistra > -463)
                         {
-                            posMacchinaSinistra -= 100;
+                            posMacchinaSinistra -= 2;
 
-                            Thread.Sleep(TimeSpan.FromMilliseconds(20));
+                            Thread.Sleep(TimeSpan.FromMilliseconds(1));
 
                             this.Dispatcher.BeginInvoke(new Action(() =>
                             {
@@ -117,6 +135,8 @@ namespace Semafori_Ponte
                         }
                     }
                 }
+
+                macchineSinistra -= 10;
             }
         }
 
@@ -141,24 +161,21 @@ namespace Semafori_Ponte
                 Thread t2 = new Thread(new ThreadStart(MovimentoSinistraDestra));
 
                 Random rnd = new Random();
-                int r = rnd.Next(1);
+                int r = rnd.Next(1,2);
 
-                t1.Start();
-                t2.Start();
-
-                /*
                 switch (r)
                 {
-                    case 0:
-                        t1.Start();
-                        break;
-
                     case 1:
+                        t1.Start();
                         t2.Start();
                         break;
-                }
-                */
 
+                    case 2:
+                        t2.Start();
+                        t1.Start();
+                        break;
+                }
+                
                 MessageBox.Show("Macchine create");
             }
             catch (Exception ex)
