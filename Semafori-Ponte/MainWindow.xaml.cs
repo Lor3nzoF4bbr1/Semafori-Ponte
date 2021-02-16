@@ -46,25 +46,37 @@ namespace Semafori_Ponte
 
         public void MovimentoDestraSinistra()
         {
-            lock (x)
+            int j;
+            for (int k = macchineDestra; k > 0; k -= 10)
             {
-                for (int i = 0; i < macchineDestra; i++)
+                j = 10;
+                macchineDestra = k;
+
+                if (k < 10)
                 {
-                    while (posMacchinaDestra > -463)
+                    j = k;
+                }
+
+                lock (x)
+                {
+                    for (int i = 0; i < macchineDestra; i++)
                     {
-                        posMacchinaDestra -= 2;
-
-                        Thread.Sleep(TimeSpan.FromMilliseconds(7));
-
-                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        while (posMacchinaDestra > -463)
                         {
-                            imgMacchinaDestra.Margin = new Thickness(posMacchinaDestra, 55, 0, 231);
-                        }));
-                    }
+                            posMacchinaDestra -= 100;
 
-                    if (posMacchinaDestra <= -463)
-                    {
-                        posMacchinaDestra = 634;
+                            Thread.Sleep(TimeSpan.FromMilliseconds(20));
+
+                            this.Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                imgMacchinaDestra.Margin = new Thickness(posMacchinaDestra, 55, 0, 231);
+                            }));
+                        }
+
+                        if (posMacchinaDestra <= -463)
+                        {
+                            posMacchinaDestra = 634;
+                        }
                     }
                 }
             }
@@ -72,25 +84,37 @@ namespace Semafori_Ponte
 
         public void MovimentoSinistraDestra()
         {
-            lock (x)
+            int j;
+            for(int k = macchineSinistra; k > 0; k -= 10)
             {
-                for(int i = 0; i < macchineSinistra; i++)
+                j = 10;
+                macchineSinistra = k;
+
+                if (k < 10)
                 {
-                    while (posMacchinaSinistra > -463)
+                    j = k;
+                }
+
+                lock (x)
+                {
+                    for (int i = 0; i < j; i++)
                     {
-                        posMacchinaSinistra -= 2;
-
-                        Thread.Sleep(TimeSpan.FromMilliseconds(7));
-
-                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        while (posMacchinaSinistra > -463)
                         {
-                            imgMacchinaSinistra.Margin = new Thickness(0, 127, posMacchinaSinistra, 169);
-                        }));
-                    }
+                            posMacchinaSinistra -= 100;
 
-                    if (posMacchinaSinistra <= -463)
-                    {
-                        posMacchinaSinistra = 624;
+                            Thread.Sleep(TimeSpan.FromMilliseconds(20));
+
+                            this.Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                imgMacchinaSinistra.Margin = new Thickness(0, 127, posMacchinaSinistra, 169);
+                            }));
+                        }
+
+                        if (posMacchinaSinistra <= -463)
+                        {
+                            posMacchinaSinistra = 624;
+                        }
                     }
                 }
             }
@@ -116,8 +140,26 @@ namespace Semafori_Ponte
                 Thread t1 = new Thread(new ThreadStart(MovimentoDestraSinistra));
                 Thread t2 = new Thread(new ThreadStart(MovimentoSinistraDestra));
 
+                Random rnd = new Random();
+                int r = rnd.Next(1);
+
                 t1.Start();
                 t2.Start();
+
+                /*
+                switch (r)
+                {
+                    case 0:
+                        t1.Start();
+                        break;
+
+                    case 1:
+                        t2.Start();
+                        break;
+                }
+                */
+
+                MessageBox.Show("Macchine create");
             }
             catch (Exception ex)
             {
